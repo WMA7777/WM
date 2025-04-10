@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Boutique Beyblade</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <header>
+        <h1>Boutique Beyblade</h1>
+        <input type="text" id="searchBar" placeholder="Rechercher une toupie...">
+        <nav>
+            <ul>
+                <li><a href="#">Accueil</a></li>
+                <li><a href="#">Produits</a></li>
+                <li><a href="#">Mon Compte</a></li>
+                <li><a href="#">Contact</a></li>
+            </ul>
+        </nav>
+    </header>
+    <main>
+        <!-- Section Produits -->
+        <section class="products">
+            <div class="product" data-name="Toupie Beyblade 1">
+                <h2>Toupie Beyblade 1</h2>
+                <img src="beyblade1.jpg" alt="Toupie Beyblade 1">
+                <p>Prix : 15€</p>
+                <button onclick="addToCart('Toupie Beyblade 1', 15)">Ajouter au panier</button>
+                <button onclick="addToWishlist('Toupie Beyblade 1')">Ajouter à la Wishlist</button>
+                <p class="reviews">⭐️⭐️⭐️⭐️ (4 avis)</p>
+            </div>
+            <div class="product" data-name="Toupie Beyblade 2">
+                <h2>Toupie Beyblade 2</h2>
+                <img src="beyblade2.jpg" alt="Toupie Beyblade 2">
+                <p>Prix : 20€</p>
+                <button onclick="addToCart('Toupie Beyblade 2', 20)">Ajouter au panier</button>
+                <button onclick="addToWishlist('Toupie Beyblade 2')">Ajouter à la Wishlist</button>
+                <p class="reviews">⭐️⭐️⭐️⭐️⭐️ (5 avis)</p>
+            </div>
+        </section>
+
+        <!-- Section Panier -->
+        <section class="cart">
+            <h2>Panier</h2>
+            <ul id="cartItems"></ul>
+            <p>Total : <span id="totalPrice">0</span>€</p>
+        </section>
+
+        <!-- Section Wishlist -->
+        <section class="wishlist">
+            <h2>Wishlist</h2>
+            <ul id="wishlistItems"></ul>
+        </section>
+
+        <!-- Section Abonnement -->
+        <section class="subscription">
+            <h2>Abonnement Mensuel</h2>
+            <label>
+                <input type="checkbox" id="subscription" onclick="handleSubscription()"> 
+                S'abonner pour 10€/mois
+            </label>
+        </section>
+
+        <!-- Section Contact -->
+        <section class="contact">
+            <h2>Contactez-nous</h2>
+            <form>
+                <input type="email" id="email" placeholder="Votre adresse e-mail">
+                <textarea id="message" placeholder="Votre message"></textarea>
+                <button onclick="sendEmail()">Envoyer</button>
+            </form>
+        </section>
+    </main>
+    <footer>
+        <p>&copy; 2025 Boutique Beyblade - Tous droits réservés</p>
+    </footer>
+    <script src="script.js"></script>
+</body>
+</html>
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #f4f4f4;
+}
+
+header {
+    background-color: #ff5722;
+    color: white;
+    text-align: center;
+    padding: 20px;
+}
+
+nav ul {
+    list-style-type: none;
+    padding: 0;
+}
+
+nav ul li {
+    display: inline;
+    margin: 0 10px;
+}
+
+nav ul li a {
+    color: white;
+    text-decoration: none;
+}
+
+.products, .cart, .wishlist, .subscription, .contact {
+    margin: 20px;
+    padding: 10px;
+    background-color: white;
+    border-radius: 5px;
+    border: 1px solid #ddd;
+}
+
+button {
+    background-color: #ff5722;
+    color: white;
+    border: none;
+    padding: 10px;
+    cursor: pointer;
+}
+
+button:hover {
+    background-color: #e64a19;
+}
+let cart = [];
+let wishlist = [];
+let loyaltyPoints = 0;
+let totalPrice = 0;
+
+// Ajouter au panier
+function addToCart(name, price) {
+    cart.push({ name, price });
+    totalPrice += price;
+    earnPoints(price);
+    updateCart();
+}
+
+// Mettre à jour le panier
+function updateCart() {
+    const cartItems = document.getElementById('cartItems');
+    const totalPriceElement = document.getElementById('totalPrice');
+
+    cartItems.innerHTML = '';
+    cart.forEach(item => {
+        const li = document.createElement('li');
+        li.textContent = `${item.name} - ${item.price}€`;
+        cartItems.appendChild(li);
+    });
+
+    totalPriceElement.textContent = totalPrice;
+}
+
+// Wishlist
+function addToWishlist(product) {
+    wishlist.push(product);
+    updateWishlist();
+}
+
+function updateWishlist() {
+    const wishlistItems = document.getElementById('wishlistItems');
+    wishlistItems.innerHTML = '';
+
+    wishlist.forEach(item => {
+        const li = document.createElement('li');
+        li.textContent = item;
+        wishlistItems.appendChild(li);
+    });
+}
+
+// Programme de fidélité
+function earnPoints(amount) {
+    const points = Math.floor(amount / 10);
+    loyaltyPoints += points;
+    console.log("Vous avez gagné " + points + " points !");
+}
+
+// Abonnement
+function handleSubscription() {
+    const isSubscribed = document.getElementById('subscription').checked;
+    alert(isSubscribed ? "Vous êtes abonné !" : "Abonnement annulé !");
+}
+
+// Contact
+function sendEmail() {
+    const email = document.getElementById('email').value;
+    const message = document.getElementById('message').value;
+
+    alert("Votre message a été envoyé !\nEmail : " + email + "\nMessage : " + message);
+}
+
+// Recherche de produits
+const searchBar = document.getElementById('searchBar');
+searchBar.addEventListener('input', () => {
+    const query = searchBar.value.toLowerCase();
+    const products = document.querySelectorAll('.product');
+
+    products.forEach(product => {
+        const name = product.dataset.name.toLowerCase();
+        product.style.display = name.includes(query) ? 'block' : 'none';
+    });
+});
