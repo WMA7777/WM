@@ -1,124 +1,1048 @@
 <!DOCTYPE html>
 <html lang="fr">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Boutique Beyblade</title>
-    <style>
-        /* Style général */
-        body {
-            font-family: Arial, sans-serif;
-            margin: 0;
-            padding: 0;
-            background-image: url('background-beyblade.jpg'); /* Ajouter un fond d'écran */
-            background-size: cover;
-            background-attachment: fixed;
-            color: white;
-        }
-
-        /* En-tête */
-        header {
-            background-color: rgba(0, 0, 0, 0.8); /* Arrière-plan transparent */
-            text-align: center;
-            padding: 20px;
-        }
-
-        header h1 {
-            font-size: 2.5em;
-            color: #FFD700; /* Couleur or */
-            margin: 0;
-        }
-
-        /* Section produits */
-        .products {
-            display: flex;
-            justify-content: center;
-            flex-wrap: wrap;
-            padding: 20px;
-        }
-
-        .product {
-            background-color: rgba(0, 0, 0, 0.8); /* Bloc semi-transparent */
-            margin: 15px;
-            border-radius: 10px;
-            text-align: center;
-            width: 300px;
-            padding: 20px;
-            box-shadow: 0 0 10px #FFD700; /* Effet brillant autour du produit */
-        }
-
-        .product img {
-            max-width: 100%;
-            border-radius: 10px;
-        }
-
-        .product h2 {
-            font-size: 1.5em;
-            margin: 15px 0;
-        }
-
-        .product p {
-            font-size: 1.2em;
-            margin: 10px 0;
-        }
-
-        .product button {
-            background-color: #FFD700;
-            color: black;
-            font-weight: bold;
-            border: none;
-            padding: 10px 20px;
-            cursor: pointer;
-            border-radius: 5px;
-        }
-
-        .product button:hover {
-            background-color: #FFA500; /* Couleur orange au survol */
-        }
-
-        /* Pied de page */
-        footer {
-            text-align: center;
-            padding: 20px;
-            background-color: rgba(0, 0, 0, 0.8);
-            color: white;
-            margin-top: 20px;
-        }
-    </style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Beyblade Shop - Boutique Ultra Avancée</title>
+  <!-- Bootstrap CSS -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css" rel="stylesheet">
+  <!-- Font Awesome -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <!-- Manifest pour PWA -->
+  <link rel="manifest" href="manifest.json">
+  <!-- Chart.js pour le dashboard admin -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <!-- Model Viewer pour la vue 3D/AR -->
+  <script type="module" src="https://unpkg.com/@google/model-viewer/dist/model-viewer.min.js"></script>
+  <style>
+    /* ===== Styles Personnalisés ===== */
+    body {
+      padding-top: 70px;
+    }
+    .navbar-brand {
+      font-weight: bold;
+      font-size: 1.8rem;
+    }
+    .product-card {
+      margin-bottom: 30px;
+    }
+    .footer {
+      background: #343a40;
+      color: #ffffff;
+      padding: 30px 0;
+    }
+    .footer a {
+      color: #ffffff;
+    }
+    .chat-button {
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+      background-color: #007bff;
+      color: #fff;
+      border: none;
+      border-radius: 50%;
+      width: 60px;
+      height: 60px;
+      font-size: 24px;
+      cursor: pointer;
+    }
+    /* Styles pour la personnalisation de produit */
+    #customizationPreview {
+      width: 100%;
+      max-width: 400px;
+      border: 1px solid #ccc;
+      margin: auto;
+    }
+    /* Simple Toast pour les notifications */
+    #toastContainer {
+      position: fixed;
+      top: 20px;
+      right: 20px;
+      z-index: 1080;
+    }
+    .toast {
+      min-width: 250px;
+    }
+    /* Styles Forum avec onglets */
+    .forum-tab {
+      margin-bottom: 20px;
+    }
+  </style>
 </head>
 <body>
-    <header>
-        <h1>Boutique Beyblade</h1>
-    </header>
-    <main>
-        <section class="products">
-            <!-- Produit 1 -->
-            <div class="product">
-                <img src="beyblade1.jpg" alt="Toupie Beyblade 1">
-                <h2>Toupie Beyblade 1</h2>
-                <p>Prix : 15€</p>
-                <button>Ajouter au panier</button>
-            </div>
 
-            <!-- Produit 2 -->
-            <div class="product">
-                <img src="beyblade2.jpg" alt="Toupie Beyblade 2">
-                <h2>Toupie Beyblade 2</h2>
-                <p>Prix : 20€</p>
-                <button>Ajouter au panier</button>
-            </div>
+  <!-- ===== Barre de Navigation ===== -->
+  <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
+    <div class="container">
+      <a class="navbar-brand" href="#">Beyblade Shop</a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarContent">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarContent">
+        <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
+          <!-- Liens vers les sections -->
+          <li class="nav-item"><a href="#home" class="nav-link">Accueil</a></li>
+          <li class="nav-item"><a href="#boutique" class="nav-link">Boutique</a></li>
+          <li class="nav-item"><a href="#customization" class="nav-link">Personnalisation</a></li>
+          <li class="nav-item"><a href="#loyalty" class="nav-link">Fidélité</a></li>
+          <li class="nav-item"><a href="#streaming" class="nav-link">Live Streaming</a></li>
+          <li class="nav-item"><a href="#forum" class="nav-link">Forum</a></li>
+          <li class="nav-item"><a href="#analytics" class="nav-link">Admin</a></li>
+          <!-- Icônes de panier, wishlist et suivi -->
+          <li class="nav-item">
+            <a href="#" class="nav-link" data-bs-toggle="modal" data-bs-target="#cartModal">
+              <i class="fa fa-shopping-cart"></i> Panier (<span id="cartCount">0</span>)
+            </a>
+          </li>
+          <li class="nav-item">
+            <a href="#" class="nav-link" data-bs-toggle="modal" data-bs-target="#wishlistModal">
+              <i class="fa fa-heart"></i> Wishlist (<span id="wishlistCount">0</span>)
+            </a>
+          </li>
+          <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle" href="#" id="currencyDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+              €
+            </a>
+            <ul class="dropdown-menu" aria-labelledby="currencyDropdown">
+              <li><a class="dropdown-item" href="#" onclick="changeCurrency('EUR')">EUR (€)</a></li>
+              <li><a class="dropdown-item" href="#" onclick="changeCurrency('USD')">USD ($)</a></li>
+              <li><a class="dropdown-item" href="#" onclick="changeCurrency('GBP')">GBP (£)</a></li>
+            </ul>
+          </li>
+          <li class="nav-item">
+            <!-- Simulation connexion avec points -->
+            <a href="#" class="nav-link" data-bs-toggle="modal" data-bs-target="#loginModal">
+              <i class="fa fa-user"></i> Compte (Points: <span id="rewardPointsDisplay">0</span>)
+            </a>
+          </li>
+          <!-- Suivi commande -->
+          <li class="nav-item">
+            <a href="#" class="nav-link" data-bs-toggle="modal" data-bs-target="#shipmentModal">
+              <i class="fa fa-truck"></i> Suivi Commande
+            </a>
+          </li>
+          <!-- Paiement -->
+          <li class="nav-item">
+            <a href="#" class="nav-link" data-bs-toggle="modal" data-bs-target="#paymentModal">
+              <i class="fa fa-credit-card"></i> Paiement
+            </a>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </nav>
 
-            <!-- Produit 3 -->
-            <div class="product">
-                <img src="beyblade3.jpg" alt="Toupie Beyblade 3">
-                <h2>Toupie Beyblade 3</h2>
-                <p>Prix : 25€</p>
-                <button>Ajouter au panier</button>
+  <!-- ===== Container des Toast Notifications ===== -->
+  <div id="toastContainer"></div>
+
+  <!-- ===== Section Accueil / Carousel ===== -->
+  <section id="home">
+    <div id="heroCarousel" class="carousel slide" data-bs-ride="carousel">
+      <div class="carousel-inner">
+        <div class="carousel-item active">
+          <img src="https://via.placeholder.com/1200x400?text=Beyblade+Battle" class="d-block w-100" alt="Beyblade Battle">
+          <div class="carousel-caption d-none d-md-block">
+            <h1>Bienvenue dans l'arène Beyblade!</h1>
+            <p>Découvrez nos toupies ultra performantes avec expériences AR/VR.</p>
+            <a href="#boutique" class="btn btn-primary">Voir la Boutique</a>
+          </div>
+        </div>
+        <div class="carousel-item">
+          <img src="https://via.placeholder.com/1200x400?text=Collection+Exclusive" class="d-block w-100" alt="Collection Exclusive">
+          <div class="carousel-caption d-none d-md-block">
+            <h1>Collection Exclusive</h1>
+            <p>Toupies rares authentifiées par blockchain.</p>
+            <a href="#boutique" class="btn btn-primary">Explorer</a>
+          </div>
+        </div>
+      </div>
+      <button class="carousel-control-prev" type="button" data-bs-target="#heroCarousel" data-bs-slide="prev">
+        <span class="carousel-control-prev-icon"></span>
+      </button>
+      <button class="carousel-control-next" type="button" data-bs-target="#heroCarousel" data-bs-slide="next">
+        <span class="carousel-control-next-icon"></span>
+      </button>
+    </div>
+  </section>
+
+  <!-- ===== Section Boutique ===== -->
+  <section id="boutique" class="container my-5">
+    <h2 class="mb-4">Boutique de Toupies Beyblade</h2>
+    <!-- Recherche & Tri Avancés -->
+    <div class="row mb-4">
+      <div class="col-md-8">
+        <input type="text" id="searchInput" class="form-control" placeholder="Recherche de toupies...">
+      </div>
+      <div class="col-md-4">
+        <select id="sortSelect" class="form-select">
+          <option value="default">Trier par défaut</option>
+          <option value="price-asc">Prix : croissant</option>
+          <option value="price-desc">Prix : décroissant</option>
+        </select>
+      </div>
+    </div>
+    <div class="row" id="productContainer">
+      <!-- Exemple de carte produit -->
+      <div class="col-md-4 product-card" data-title="Beyblade Turbo" data-price="29.99" data-inventory="5">
+        <div class="card">
+          <img src="https://via.placeholder.com/350x200?text=Beyblade+Turbo" class="card-img-top" alt="Beyblade Turbo">
+          <div class="card-body">
+            <h5 class="card-title">Beyblade Turbo</h5>
+            <p class="card-text">Toupie haute performance pour des batailles intenses.</p>
+            <p class="card-text">
+              <strong>Prix : <span class="product-price" data-baseprice="29.99">29.99</span>
+              <span class="currency-symbol">€</span></strong>
+            </p>
+            <p class="card-text">
+              <small id="inventoryBeybladeTurbo">En stock: 5</small>
+            </p>
+            <button class="btn btn-info btn-sm" onclick="viewDetails('Beyblade Turbo', 'Découvrez le Beyblade Turbo en 3D avec options AR.', 29.99)">Détails</button>
+            <button class="btn btn-primary btn-sm" onclick="addToCart('Beyblade Turbo', 29.99)">Ajouter au panier</button>
+            <button class="btn btn-warning btn-sm" onclick="addToWishlist('Beyblade Turbo', 29.99)">Wishlist</button>
+            <button class="btn btn-secondary btn-sm" onclick="verifyAuthenticity('Beyblade Turbo')">Vérifier Authenticité</button>
+          </div>
+        </div>
+      </div>
+      <!-- Vous pouvez ajouter d'autres cartes produits -->
+      <div class="col-md-4 product-card" data-title="Beyblade Strike" data-price="34.99" data-inventory="2">
+        <div class="card">
+          <img src="https://via.placeholder.com/350x200?text=Beyblade+Strike" class="card-img-top" alt="Beyblade Strike">
+          <div class="card-body">
+            <h5 class="card-title">Beyblade Strike</h5>
+            <p class="card-text">Pour des attaques rapides et des contre-attaques surprises.</p>
+            <p class="card-text">
+              <strong>Prix : <span class="product-price" data-baseprice="34.99">34.99</span>
+              <span class="currency-symbol">€</span></strong>
+            </p>
+            <p class="card-text">
+              <small id="inventoryBeybladeStrike">En stock: 2</small>
+            </p>
+            <button class="btn btn-info btn-sm" onclick="viewDetails('Beyblade Strike', 'Beyblade Strike allie rapidité et agilité.', 34.99)">Détails</button>
+            <button class="btn btn-primary btn-sm" onclick="addToCart('Beyblade Strike', 34.99)">Ajouter au panier</button>
+            <button class="btn btn-warning btn-sm" onclick="addToWishlist('Beyblade Strike', 34.99)">Wishlist</button>
+            <button class="btn btn-secondary btn-sm" onclick="verifyAuthenticity('Beyblade Strike')">Vérifier Authenticité</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== Section Personnalisation Produits ===== -->
+  <section id="customization" class="container my-5">
+    <h2 class="mb-4">Personnaliser votre Beyblade</h2>
+    <div class="row">
+      <div class="col-md-6">
+        <!-- Formulaire de personnalisation -->
+        <form id="customizationForm">
+          <div class="mb-3">
+            <label for="customColor" class="form-label">Choisissez votre couleur</label>
+            <input type="color" class="form-control form-control-color" id="customColor" value="#ff0000">
+          </div>
+          <div class="mb-3">
+            <label for="customGravure" class="form-label">Gravure personnalisée</label>
+            <input type="text" class="form-control" id="customGravure" placeholder="Ex: Mon blason">
+          </div>
+          <div class="mb-3">
+            <label for="customMessage" class="form-label">Message (optionnel)</label>
+            <input type="text" class="form-control" id="customMessage" placeholder="Message à graver">
+          </div>
+          <button type="button" class="btn btn-success" onclick="applyCustomization()">Appliquer la personnalisation</button>
+        </form>
+      </div>
+      <div class="col-md-6 text-center">
+        <p>Aperçu de votre personnalisé :</p>
+        <img id="customizationPreview" src="https://via.placeholder.com/400x300?text=Vue+Personnalisée" alt="Aperçu">
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== Section Programme de Fidélité & Parrainage ===== -->
+  <section id="loyalty" class="container my-5">
+    <h2 class="mb-4">Programme de Fidélité & Parrainage</h2>
+    <div class="row">
+      <div class="col-md-6">
+        <h5>Vos badges et points</h5>
+        <p>Points accumulés: <span id="loyaltyPointsDisplay">0</span></p>
+        <ul id="badgesList">
+          <!-- Simulation de badges attribués -->
+          <li>Débutant – 0 point</li>
+        </ul>
+      </div>
+      <div class="col-md-6">
+        <h5>Invitez un ami</h5>
+        <p>Votre code de parrainage: <strong id="referralCode">BEY123</strong></p>
+        <button class="btn btn-primary" onclick="copyReferralCode()">Copier le code et partager</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== Section Live Streaming & Événements en Direct ===== -->
+  <section id="streaming" class="container my-5">
+    <h2 class="mb-4">Live Streaming & Tournois en Direct</h2>
+    <div class="ratio ratio-16x9 mb-3">
+      <!-- Simulation d'un flux live via iframe (exemple YouTube) -->
+      <iframe src="https://www.youtube.com/embed/live_stream?channel=UC4R8DWoMoI7CAwX8_LjQHig" frameborder="0" allowfullscreen></iframe>
+    </div>
+    <p class="text-center">Rejoignez nos diffusions en direct pour suivre les tournois et les démonstrations en temps réel.</p>
+  </section>
+
+  <!-- ===== Section Forum Structuré ===== -->
+  <section id="forum" class="container my-5">
+    <h2 class="mb-4">Forum Communautaire</h2>
+    <!-- Onglets pour les catégories -->
+    <ul class="nav nav-tabs forum-tab" id="forumTab" role="tablist">
+      <li class="nav-item" role="presentation">
+        <button class="nav-link active" id="general-tab" data-bs-toggle="tab" data-bs-target="#general" type="button" role="tab">Général</button>
+      </li>
+      <li class="nav-item" role="presentation">
+        <button class="nav-link" id="tournament-tab" data-bs-toggle="tab" data-bs-target="#tournamentForum" type="button" role="tab">Tournois</button>
+      </li>
+    </ul>
+    <div class="tab-content" id="forumTabContent">
+      <!-- Onglet Général -->
+      <div class="tab-pane fade show active" id="general" role="tabpanel">
+        <form id="forumFormGeneral" class="my-3">
+          <div class="mb-3">
+            <label for="forumNameGeneral" class="form-label">Votre nom</label>
+            <input type="text" class="form-control" id="forumNameGeneral" required>
+          </div>
+          <div class="mb-3">
+            <label for="forumMessageGeneral" class="form-label">Votre message</label>
+            <textarea class="form-control" id="forumMessageGeneral" rows="3" required></textarea>
+          </div>
+          <button type="submit" class="btn btn-primary">Poster dans Général</button>
+        </form>
+        <div id="forumPostsGeneral">
+          <!-- Posts du forum Général -->
+        </div>
+      </div>
+      <!-- Onglet Tournois -->
+      <div class="tab-pane fade" id="tournamentForum" role="tabpanel">
+        <form id="forumFormTournament" class="my-3">
+          <div class="mb-3">
+            <label for="forumNameTournament" class="form-label">Votre nom</label>
+            <input type="text" class="form-control" id="forumNameTournament" required>
+          </div>
+          <div class="mb-3">
+            <label for="forumMessageTournament" class="form-label">Votre message</label>
+            <textarea class="form-control" id="forumMessageTournament" rows="3" required></textarea>
+          </div>
+          <button type="submit" class="btn btn-primary">Poster dans Tournois</button>
+        </form>
+        <div id="forumPostsTournament">
+          <!-- Posts du forum Tournois -->
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== Section Admin Analytics (A/B Testing inclus) ===== -->
+  <section id="analytics" class="container my-5">
+    <h2 class="mb-4">Dashboard Administrateur</h2>
+    <div id="analyticsChartContainer">
+      <canvas id="salesChart"></canvas>
+    </div>
+    <div class="mt-4">
+      <h5>Résultats des tests A/B</h5>
+      <canvas id="abTestChart"></canvas>
+    </div>
+  </section>
+
+  <!-- ===== Section Paiement Multi-Canal (Modal) ===== -->
+  <div class="modal fade" id="paymentModal" tabindex="-1" aria-labelledby="paymentModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title">Paiement Sécurisé</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Fermer"></button>
+        </div>
+        <div class="modal-body">
+          <form id="paymentForm">
+            <div class="mb-3">
+              <label class="form-label">Choisissez votre méthode de paiement</label>
+              <div>
+                <input type="radio" name="paymentMethod" value="card" id="payCard" checked>
+                <label for="payCard">Carte de Crédit</label>
+              </div>
+              <div>
+                <input type="radio" name="paymentMethod" value="apple" id="payApple">
+                <label for="payApple">Apple Pay</label>
+              </div>
+              <div>
+                <input type="radio" name="paymentMethod" value="google" id="payGoogle">
+                <label for="payGoogle">Google Pay</label>
+              </div>
+              <div>
+                <input type="radio" name="paymentMethod" value="crypto" id="payCrypto">
+                <label for="payCrypto">Cryptomonnaies</label>
+              </div>
             </div>
-        </section>
-    </main>
-    <footer>
-        <p>&copy; 2025 Boutique Beyblade - Tous droits réservés.</p>
-    </footer>
+            <div id="cardDetails" class="mb-3">
+              <label for="cardNumber" class="form-label">Numéro de Carte</label>
+              <input type="text" class="form-control" id="cardNumber" placeholder="XXXX XXXX XXXX XXXX">
+            </div>
+            <button type="submit" class="btn btn-success w-100">Payer</button>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===== Section Suivi de Commande (Modal) ===== -->
+  <div class="modal fade" id="shipmentModal" tabindex="-1" aria-labelledby="shipmentModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title">Suivi de Commande</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Fermer"></button>
+        </div>
+        <div class="modal-body">
+          <form id="trackingForm">
+            <div class="mb-3">
+              <label for="trackingNumber" class="form-label">Numéro de suivi</label>
+              <input type="text" class="form-control" id="trackingNumber" placeholder="Ex: TRK123456" required>
+            </div>
+            <button type="submit" class="btn btn-primary w-100">Suivre</button>
+          </form>
+          <div id="trackingResult" class="mt-3"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===== Modal Chat & Assistance Multicanal ===== -->
+  <div class="modal fade" id="chatModal" tabindex="-1" aria-labelledby="chatModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title">Assistance en Direct</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Fermer"></button>
+        </div>
+        <div class="modal-body">
+          <div id="chatConversation" style="height:200px; overflow-y:auto; border:1px solid #ccc; padding:10px;"></div>
+          <div class="input-group mt-3">
+            <input type="text" id="chatInput" class="form-control" placeholder="Votre message...">
+            <button class="btn btn-primary" id="sendChatBtn">Envoyer</button>
+          </div>
+          <div class="mt-2">
+            <small class="text-muted">Vous pouvez également nous joindre par email ou téléphone.</small>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===== Modal Connexion & 2FA ===== -->
+  <div class="modal fade" id="loginModal" tabindex="-1" aria-labelledby="loginModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content" id="loginContent">
+        <div class="modal-header">
+          <h5 class="modal-title">Connexion Utilisateur</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Fermer"></button>
+        </div>
+        <div class="modal-body" id="loginFormContainer">
+          <form id="loginForm">
+            <div class="mb-3">
+              <label for="loginEmail" class="form-label">Email</label>
+              <input type="email" class="form-control" id="loginEmail" required>
+            </div>
+            <div class="mb-3">
+              <label for="loginPassword" class="form-label">Mot de passe</label>
+              <input type="password" class="form-control" id="loginPassword" required>
+            </div>
+            <button type="submit" class="btn btn-primary w-100">Se connecter</button>
+          </form>
+        </div>
+        <div class="modal-body d-none" id="twoFAModalContainer">
+          <p>Un code 2FA vient d'être envoyé à votre email.</p>
+          <form id="twoFAForm">
+            <div class="mb-3">
+              <label for="twoFACode" class="form-label">Entrez le code 2FA</label>
+              <input type="text" class="form-control" id="twoFACode" required>
+            </div>
+            <button type="submit" class="btn btn-success w-100">Valider</button>
+          </form>
+        </div>
+        <div class="modal-footer">
+          <p class="text-center w-100">Pas encore de compte ? <a href="#">S'inscrire</a></p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===== Modal Blockchain Authenticité ===== -->
+  <div class="modal fade" id="blockchainModal" tabindex="-1" aria-labelledby="blockchainModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title">Vérification d'Authenticité Blockchain</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Fermer"></button>
+        </div>
+        <div class="modal-body" id="blockchainContent">
+          <p>Vérification en cours...</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===== Modal Détails du Produit (inclut AR et avis) ===== -->
+  <div class="modal fade" id="productDetailModal" tabindex="-1" aria-labelledby="productDetailModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="productDetailModalLabel">Détails du Produit</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Fermer"></button>
+        </div>
+        <div class="modal-body">
+          <h4 id="detailProductTitle"></h4>
+          <p id="detailProductDescription"></p>
+          <p><strong>Prix : <span id="detailProductPrice" data-baseprice=""></span> <span id="detailCurrencySymbol"></span></strong></p>
+          <!-- Vue 3D/AR (utilisation de model-viewer) -->
+          <model-viewer src="https://modelviewer.dev/shared-assets/models/Astronaut.glb"
+                        alt="Modèle 3D" camera-controls auto-rotate
+                        style="width:100%; height:400px;">
+          </model-viewer>
+          <hr>
+          <div id="reviewSection">
+            <h6>Avis des utilisateurs</h6>
+            <div id="reviewList"><!-- Les avis s'afficheront ici --></div>
+            <hr>
+            <h6>Ajouter un avis</h6>
+            <form id="reviewForm" onsubmit="submitReview(event)">
+              <div class="mb-3">
+                <label for="reviewText" class="form-label">Votre avis</label>
+                <textarea class="form-control" id="reviewText" rows="2" required></textarea>
+              </div>
+              <div class="mb-3">
+                <label for="reviewRating" class="form-label">Note (1 à 5)</label>
+                <select class="form-select" id="reviewRating" required>
+                  <option value="">Choisir une note</option>
+                  <option value="1">1</option>
+                  <option value="2">2</option>
+                  <option value="3">3</option>
+                  <option value="4">4</option>
+                  <option value="5">5</option>
+                </select>
+              </div>
+              <button type="submit" class="btn btn-success">Envoyer</button>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===== Section Contact ===== -->
+  <section id="contact" class="container my-5">
+    <h2 class="mb-4">Contactez-nous</h2>
+    <form id="contactForm">
+      <div class="mb-3">
+        <label for="contactName" class="form-label">Nom</label>
+        <input type="text" class="form-control" id="contactName" required>
+      </div>
+      <div class="mb-3">
+        <label for="contactEmail" class="form-label">Email</label>
+        <input type="email" class="form-control" id="contactEmail" required>
+      </div>
+      <div class="mb-3">
+        <label for="contactSubject" class="form-label">Sujet</label>
+        <input type="text" class="form-control" id="contactSubject" required>
+      </div>
+      <div class="mb-3">
+        <label for="contactMessage" class="form-label">Message</label>
+        <textarea class="form-control" id="contactMessage" rows="4" required></textarea>
+      </div>
+      <button type="submit" class="btn btn-primary">Envoyer le message</button>
+    </form>
+  </section>
+
+  <!-- ===== Footer & Newsletter ===== -->
+  <footer class="footer">
+    <div class="container">
+      <div class="row">
+        <div class="col-md-6">
+          <h5>À propos de Beyblade Shop</h5>
+          <p>Votre destination pour des toupies Beyblade exclusives et une expérience immersive.</p>
+        </div>
+        <div class="col-md-6">
+          <h5>Newsletter</h5>
+          <form id="newsletterForm">
+            <div class="input-group">
+              <input type="email" class="form-control" placeholder="Votre email" required>
+              <button class="btn btn-primary" type="submit">S'abonner</button>
+            </div>
+          </form>
+        </div>
+      </div>
+      <div class="text-center mt-3">
+        <p>&copy; 2025 Beyblade Shop. Tous droits réservés.</p>
+        <p>
+          <a href="#"><i class="fab fa-facebook"></i></a>
+          <a href="#"><i class="fab fa-twitter"></i></a>
+          <a href="#"><i class="fab fa-instagram"></i></a>
+        </p>
+      </div>
+    </div>
+  </footer>
+
+  <!-- ===== Bouton de Chat Flottant ===== -->
+  <button class="chat-button" data-bs-toggle="modal" data-bs-target="#chatModal">
+    <i class="fa fa-comments"></i>
+  </button>
+
+  <!-- ===== Toast Notification Template ===== -->
+  <template id="toastTemplate">
+    <div class="toast align-items-center text-white bg-primary border-0" role="alert" aria-live="assertive" aria-atomic="true">
+      <div class="d-flex">
+        <div class="toast-body">
+          Message de notification
+        </div>
+        <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
+      </div>
+    </div>
+  </template>
+
+  <!-- ===== Scripts Personnalisés ===== -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js"></script>
+  <script>
+    /* Variables Globales */
+    let cart = [];
+    let wishlist = [];
+    let rewardPoints = 0;
+    let couponDiscount = 0; // Exemple : 0.10 pour 10%
+    let currentCurrency = 'EUR';
+    const currencyRates = { EUR: 1, USD: 1.1, GBP: 0.9 };
+    const currencySymbols = { EUR: "€", USD: "$", GBP: "£" };
+    
+    // Inventaire simulé pour les produits (en stock)
+    const inventory = {
+      "Beyblade Turbo": 5,
+      "Beyblade Strike": 2
+    };
+
+    /* Mise à jour des points de fidélité */
+    function updateRewardPoints(points) {
+      rewardPoints += points;
+      document.getElementById("rewardPointsDisplay").innerText = rewardPoints;
+      document.getElementById("loyaltyPointsDisplay").innerText = rewardPoints;
+    }
+
+    /* Gestion du Panier */
+    function addToCart(title, price) {
+      if (inventory[title] <= 0) {
+        showToast("Désolé, " + title + " est épuisé.");
+        return;
+      }
+      let existing = cart.find(item => item.title === title);
+      if (existing) { existing.quantity++; } 
+      else { cart.push({ title, price, quantity: 1 }); }
+      inventory[title] = Math.max(0, inventory[title] - 1);
+      updateCart();
+      updateRewardPoints(10);
+      showToast(title + " a été ajouté au panier !");
+      updateInventoryDisplay(title);
+    }
+
+    function updateCart() {
+      const tbody = document.querySelector("#cartTable tbody");
+      tbody.innerHTML = "";
+      let subtotal = 0;
+      cart.forEach((item, idx) => {
+        const itemTotal = item.price * item.quantity;
+        subtotal += itemTotal;
+        const row = document.createElement("tr");
+        row.innerHTML = `
+          <td>${item.title}</td>
+          <td>${convertPrice(item.price).toFixed(2)} ${currencySymbols[currentCurrency]}</td>
+          <td>${item.quantity}</td>
+          <td>${convertPrice(itemTotal).toFixed(2)} ${currencySymbols[currentCurrency]}</td>
+          <td><button class="btn btn-danger btn-sm" onclick="removeFromCart(${idx}, '${item.title}')">Supprimer</button></td>
+        `;
+        tbody.appendChild(row);
+      });
+      let total = subtotal;
+      const discountInfoElem = document.getElementById("discountInfo");
+      if (couponDiscount > 0) {
+        const discountAmount = total * couponDiscount;
+        total -= discountAmount;
+        discountInfoElem.innerText = "Remise appliquée : -" + convertPrice(discountAmount).toFixed(2) + " " + currencySymbols[currentCurrency];
+      } else {
+        discountInfoElem.innerText = "";
+      }
+      document.getElementById("cartTotal").innerText = convertPrice(total).toFixed(2) + " " + currencySymbols[currentCurrency];
+      document.getElementById("cartCount").innerText = cart.reduce((cnt, item) => cnt + item.quantity, 0);
+    }
+
+    function removeFromCart(index, title) {
+      const removed = cart.splice(index, 1)[0];
+      inventory[title] += removed.quantity;
+      updateCart();
+      updateInventoryDisplay(title);
+    }
+
+    /* Gestion de la Wishlist */
+    function addToWishlist(title, price) {
+      if (!wishlist.find(item => item.title === title)) {
+        wishlist.push({ title, price });
+        updateWishlist();
+        updateRewardPoints(5);
+        showToast(title + " ajouté à la wishlist !");
+      } else {
+        showToast(title + " est déjà dans la wishlist !");
+      }
+    }
+
+    function updateWishlist() {
+      const list = document.getElementById("wishlistList");
+      list.innerHTML = "";
+      wishlist.forEach((item, idx) => {
+        const li = document.createElement("li");
+        li.className = "list-group-item d-flex justify-content-between align-items-center";
+        li.innerHTML = `${item.title} - ${convertPrice(item.price).toFixed(2)} ${currencySymbols[currentCurrency]}
+          <button class="btn btn-sm btn-danger" onclick="removeFromWishlist(${idx})">Supprimer</button>`;
+        list.appendChild(li);
+      });
+      document.getElementById("wishlistCount").innerText = wishlist.length;
+      showRecommendations();
+    }
+
+    function removeFromWishlist(idx) {
+      wishlist.splice(idx, 1);
+      updateWishlist();
+    }
+
+    function transferWishlistToCart() {
+      wishlist.forEach(item => { addToCart(item.title, item.price); });
+      wishlist = [];
+      updateWishlist();
+    }
+
+    /* Recherche & Tri */
+    document.getElementById("searchInput").addEventListener("keyup", function() {
+      const filter = this.value.toLowerCase();
+      document.querySelectorAll(".product-card").forEach(card => {
+        const title = card.getAttribute("data-title").toLowerCase();
+        card.style.display = title.includes(filter) ? "" : "none";
+      });
+    });
+
+    document.getElementById("sortSelect").addEventListener("change", function() {
+      const sortBy = this.value;
+      const container = document.getElementById("productContainer");
+      const cards = Array.from(container.getElementsByClassName("product-card"));
+      cards.sort((a, b) => {
+        const priceA = parseFloat(a.getAttribute("data-price"));
+        const priceB = parseFloat(b.getAttribute("data-price"));
+        if (sortBy === "price-asc") return priceA - priceB;
+        if (sortBy === "price-desc") return priceB - priceA;
+        return 0;
+      });
+      cards.forEach(card => container.appendChild(card));
+    });
+
+    /* Conversion de devise */
+    function convertPrice(price) {
+      return price * currencyRates[currentCurrency];
+    }
+
+    function changeCurrency(currency) {
+      currentCurrency = currency;
+      document.getElementById("currencyDropdown").innerText = currencySymbols[currency];
+      document.querySelectorAll(".product-price").forEach(span => {
+        const basePrice = parseFloat(span.getAttribute("data-baseprice"));
+        span.innerText = convertPrice(basePrice).toFixed(2);
+      });
+      updateCart();
+      updateWishlist();
+      showRecommendations();
+    }
+
+    /* Détails produits et avis */
+    let currentProduct = "";
+    const productReviews = {};
+    function viewDetails(title, description, price) {
+      currentProduct = title;
+      document.getElementById("detailProductTitle").innerText = title;
+      document.getElementById("detailProductDescription").innerText = description;
+      const detailPriceElem = document.getElementById("detailProductPrice");
+      detailPriceElem.setAttribute("data-baseprice", price);
+      detailPriceElem.innerText = convertPrice(price).toFixed(2);
+      document.getElementById("detailCurrencySymbol").innerText = currencySymbols[currentCurrency];
+      loadReviews(title);
+      new bootstrap.Modal(document.getElementById("productDetailModal")).show();
+    }
+
+    function loadReviews(productTitle) {
+      const reviewList = document.getElementById("reviewList");
+      reviewList.innerHTML = "";
+      if (productReviews[productTitle]) {
+        productReviews[productTitle].forEach(review => {
+          const reviewElem = document.createElement("div");
+          reviewElem.className = "mb-2";
+          reviewElem.innerHTML = `<strong>${review.rating}★</strong> - ${review.text}`;
+          reviewList.appendChild(reviewElem);
+        });
+      } else {
+        reviewList.innerHTML = "<p>Aucun avis pour le moment.</p>";
+      }
+    }
+
+    function submitReview(e) {
+      e.preventDefault();
+      const reviewText = document.getElementById("reviewText").value;
+      const reviewRating = document.getElementById("reviewRating").value;
+      if (!productReviews[currentProduct]) { productReviews[currentProduct] = []; }
+      productReviews[currentProduct].push({ text: reviewText, rating: reviewRating });
+      document.getElementById("reviewForm").reset();
+      loadReviews(currentProduct);
+      updateRewardPoints(5);
+    }
+
+    /* Code promo */
+    function applyCoupon() {
+      const code = document.getElementById("couponCode").value.trim();
+      if (code === "BEYBLADES10") { couponDiscount = 0.10; showToast("Code promo appliqué : -10%"); }
+      else { couponDiscount = 0; showToast("Code promo invalide !"); }
+      updateCart();
+    }
+
+    /* Mise à jour affichage inventaire */
+    function updateInventoryDisplay(title) {
+      const elem = document.getElementById("inventory" + title.replace(/\s+/g, ""));
+      if (elem) {
+        elem.innerText = "En stock: " + inventory[title];
+      }
+    }
+
+    /* Recommandations */
+    function showRecommendations() {
+      const container = document.getElementById("recommendationContainer");
+      if (!container) return;
+      container.innerHTML = "";
+      let recommended = [];
+      if (wishlist.length > 0) { recommended = wishlist.slice(0, 3); }
+      else {
+        const productCards = Array.from(document.querySelectorAll("#productContainer .product-card"));
+        recommended = productCards.slice(0, 3).map(card => ({
+          title: card.getAttribute("data-title"),
+          price: parseFloat(card.getAttribute("data-price")),
+          image: card.querySelector("img").src
+        }));
+      }
+      recommended.forEach(item => {
+        const col = document.createElement("div");
+        col.className = "col-md-4 product-card";
+        col.innerHTML = `
+          <div class="card">
+            <img src="${item.image}" class="card-img-top" alt="${item.title}">
+            <div class="card-body">
+              <h5 class="card-title">${item.title}</h5>
+              <p class="card-text">Prix: ${convertPrice(item.price).toFixed(2)} ${currencySymbols[currentCurrency]}</p>
+              <button class="btn btn-primary btn-sm" onclick="addToCart('${item.title}', ${item.price})">Ajouter au panier</button>
+            </div>
+          </div>
+        `;
+        container.appendChild(col);
+      });
+    }
+
+    /* Suivi commande */
+    document.getElementById("trackingForm").addEventListener("submit", function(e) {
+      e.preventDefault();
+      const trackingNumber = document.getElementById("trackingNumber").value.trim();
+      document.getElementById("trackingResult").innerHTML = `<p>Commande ${trackingNumber} en transit... Livraison prévue dans 3 jours.</p>`;
+    });
+
+    /* Simulation Tournoi */
+    function simulateTournament() {
+      const winners = ["Beyblade Turbo", "Beyblade Strike"];
+      const winner = winners[Math.floor(Math.random() * winners.length)];
+      document.getElementById("tournamentResult").innerHTML = `<p>Résultat du tournoi: ${winner} est vainqueur !</p>`;
+      updateRewardPoints(20);
+    }
+
+    /* Chatbot */
+    document.getElementById("sendChatBtn")?.addEventListener("click", function() {
+      const chatInput = document.getElementById("chatInput");
+      const message = chatInput.value.trim();
+      if (message !== "") {
+        const chatConv = document.getElementById("chatConversation");
+        const userMsg = document.createElement("p");
+        userMsg.innerHTML = "<strong>Vous:</strong> " + message;
+        chatConv.appendChild(userMsg);
+        chatInput.value = "";
+        chatConv.scrollTop = chatConv.scrollHeight;
+        setTimeout(() => {
+          const botMsg = document.createElement("p");
+          botMsg.innerHTML = "<strong>Chatbot:</strong> Merci pour votre message. Avez-vous besoin d'aide pour choisir votre prochaine toupie ?";
+          chatConv.appendChild(botMsg);
+          chatConv.scrollTop = chatConv.scrollHeight;
+        }, 1500);
+      }
+    });
+
+    /* Forum Général */
+    document.getElementById("forumFormGeneral").addEventListener("submit", function(e) {
+      e.preventDefault();
+      const name = document.getElementById("forumNameGeneral").value.trim();
+      const message = document.getElementById("forumMessageGeneral").value.trim();
+      if(name && message) {
+        addForumPost("general", name, message);
+        this.reset();
+      }
+    });
+    /* Forum Tournois */
+    document.getElementById("forumFormTournament").addEventListener("submit", function(e) {
+      e.preventDefault();
+      const name = document.getElementById("forumNameTournament").value.trim();
+      const message = document.getElementById("forumMessageTournament").value.trim();
+      if(name && message) {
+        addForumPost("tournament", name, message);
+        this.reset();
+      }
+    });
+    function addForumPost(category, name, message) {
+      const container = (category === "general") ? document.getElementById("forumPostsGeneral") : document.getElementById("forumPostsTournament");
+      const post = document.createElement("div");
+      post.className = "border p-3 mb-2";
+      post.innerHTML = `<h6>${name}</h6><p>${message}</p>`;
+      container.insertBefore(post, container.firstChild);
+    }
+
+    /* Paiement Multi-Canal Simulation */
+    document.getElementById("paymentForm").addEventListener("submit", function(e) {
+      e.preventDefault();
+      const method = document.querySelector('input[name="paymentMethod"]:checked').value;
+      showToast("Paiement effectué via " + method + " (simulation).");
+      // Après paiement, vider le panier (simulation)
+      cart = [];
+      updateCart();
+      new bootstrap.Modal(document.getElementById("paymentModal")).hide();
+    });
+    /* Affichage conditionnel des détails de paiement */
+    document.querySelectorAll('input[name="paymentMethod"]').forEach(radio => {
+      radio.addEventListener("change", function() {
+        if (this.value === "card") {
+          document.getElementById("cardDetails").classList.remove("d-none");
+        } else {
+          document.getElementById("cardDetails").classList.add("d-none");
+        }
+      });
+    });
+
+    /* Personnalisation (configurateur) */
+    function applyCustomization() {
+      const color = document.getElementById("customColor").value;
+      const gravure = document.getElementById("customGravure").value;
+      const message = document.getElementById("customMessage").value;
+      const preview = document.getElementById("customizationPreview");
+      // Simuler la personnalisation en changeant la couleur du cadre et affichant un texte superposé
+      preview.style.borderColor = color;
+      preview.src = "https://via.placeholder.com/400x300/" + color.substring(1) + "/ffffff?text=" +
+                    encodeURIComponent(gravure || message || "Personnalisé");
+      showToast("Personnalisation appliquée !");
+      updateRewardPoints(5);
+    }
+
+    /* Programme de Fidélité - Parrainage */
+    function copyReferralCode() {
+      const code = document.getElementById("referralCode").innerText;
+      navigator.clipboard.writeText(code);
+      showToast("Code de parrainage copié !");
+      updateRewardPoints(10);
+    }
+
+    /* Blockchain Authenticité */
+    function verifyAuthenticity(productTitle) {
+      new bootstrap.Modal(document.getElementById("blockchainModal")).show();
+      document.getElementById("blockchainContent").innerHTML = "<p>Vérification en cours pour " + productTitle + "...</p>";
+      setTimeout(() => {
+        document.getElementById("blockchainContent").innerHTML = `<p>${productTitle} est authentique.<br>Hash: ${Math.random().toString(36).substring(2, 15)}</p>`;
+      }, 2000);
+    }
+
+    /* Notifications en Temps Réel */
+    function showToast(message) {
+      const template = document.getElementById("toastTemplate").content.cloneNode(true);
+      template.querySelector(".toast-body").innerText = message;
+      const toastDiv = template.firstElementChild;
+      document.getElementById("toastContainer").appendChild(toastDiv);
+      const bsToast = new bootstrap.Toast(toastDiv, { delay: 3000 });
+      bsToast.show();
+      toastDiv.addEventListener('hidden.bs.toast', () => { toastDiv.remove(); });
+    }
+
+    /* Admin Analytics avec Chart.js */
+    window.onload = function() {
+      showRecommendations();
+      // Chart ventes hebdomadaires
+      const ctx = document.getElementById("salesChart").getContext("2d");
+      new Chart(ctx, {
+        type: 'line',
+        data: {
+          labels: ["Lun", "Mar", "Mer", "Jeu", "Ven", "Sam", "Dim"],
+          datasets: [{
+            label: "Ventes",
+            data: [12, 19, 3, 5, 2, 3, 15],
+            backgroundColor: "rgba(54, 162, 235, 0.2)",
+            borderColor: "rgba(54, 162, 235, 1)",
+            borderWidth: 1,
+            fill: true
+          }]
+        },
+        options: {
+          scales: { y: { beginAtZero: true } }
+        }
+      });
+      
+      // Chart A/B testing (exemple)
+      const ctx2 = document.getElementById("abTestChart").getContext("2d");
+      new Chart(ctx2, {
+        type: 'bar',
+        data: {
+          labels: ["Version A", "Version B"],
+          datasets: [{
+            label: "Taux de Conversion (%)",
+            data: [35, 45],
+            backgroundColor: ["rgba(255, 99, 132, 0.6)", "rgba(75, 192, 192, 0.6)"]
+          }]
+        },
+        options: {
+          scales: { y: { beginAtZero: true, max: 100 } }
+        }
+      });
+    };
+
+    /* Connexion & 2FA */
+    document.getElementById("loginForm")?.addEventListener("submit", function(e) {
+      e.preventDefault();
+      document.getElementById("loginFormContainer").classList.add("d-none");
+      document.getElementById("twoFAModalContainer").classList.remove("d-none");
+      showToast("Code 2FA envoyé (simulé).");
+    });
+
+    document.getElementById("twoFAForm")?.addEventListener("submit", function(e) {
+      e.preventDefault();
+      const code = document.getElementById("twoFACode").value.trim();
+      if (code === "123456") {
+        showToast("Connexion réussie !");
+        new bootstrap.Modal(document.getElementById("loginModal")).hide();
+      } else {
+        showToast("Code 2FA invalide !");
+      }
+    });
+
+    /* Enregistrement du Service Worker pour PWA */
+    if ('serviceWorker' in navigator) {
+      window.addEventListener('load', function() {
+        navigator.serviceWorker.register('/sw.js').then(function(registration) {
+          console.log('Service Worker enregistré avec scope:', registration.scope);
+        }, function(err) {
+          console.error('Enregistrement du Service Worker échoué:', err);
+        });
+      });
+    }
+  </script>
 </body>
 </html>
